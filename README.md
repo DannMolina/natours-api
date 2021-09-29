@@ -28,9 +28,10 @@ Principles of REST APIs
     should usually use the JSON data format, where some formatting standard applied to it.
     additionals:
   - Jsend: simple response formatting. Consist of status and data
-    e.g.
+    ````
+     e.g.
     normal object:
-    ````{
+    {
         "id": "5",
         "rating": "4.9" ,
         "guides": [
