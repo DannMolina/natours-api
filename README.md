@@ -58,7 +58,7 @@ _Principles of REST APIs_
         -   DELETE: /tours/<id> - delete resource but must be authenticated to perform the action.
 -   Use **HTPP methods(verb)**
     -   perform different action on the data like reading or creating,
-        deleting data, the API should use the right HTTP methods and not the URL.
+        deleting data, the API should use the right HTTP methods and not the URL or endpoint as a method.
 -   Send data as **JSON**
     -   JSON is a very lightweight data interchange format which is heavily used by web APIs coded in any programming language
     -   the data we send back to client or that we received from the client
@@ -102,10 +102,20 @@ _Principles of REST APIs_
         }
         ````
 -   Send data as **stateless**
+
     -   State: simply refers to a piece of data in the application that might change over time.
         e.g. of state:
         loggedIn: whether a use is logged in or
         currentPage: on a page with a list of several pages what the current pages is.
+
+        bad practice: GET /tours/nextPage = server needs to know the currentPage before proceeding to next page
+
+        -   send(nextPage)
+
+        good practice: GET /tours/page/6 = request a page from client base on parameter
+
+        -   send(6)
+
     -   All state is handled on the client. This means that each request must contain all the information
         necessary to process a certain request.
         The server should not have to remember the previous request.
