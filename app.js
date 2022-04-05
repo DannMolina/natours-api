@@ -16,19 +16,21 @@ const app = express();
  */
 
 // * arguments = <route>, <callback fn>(request, response)
-app.get('/', (req, res) => {
-	res.status(200).json({
-		message: 'Hello from server!',
-		app: 'Natours',
-	});
-});
+// app.get('/', (req, res) => {
+// 	res.status(200).json({
+// 		message: 'Hello from server!',
+// 		app: 'Natours',
+// 	});
+// });
 
-app.post('/', (req, res) => {
-	res.status(200).json({
-		message: 'You can post to this input...',
-		app: 'Natours',
-	});
-});
+// app.post('/', (req, res) => {
+// 	res.status(200).json({
+// 		message: 'You can post to this input...',
+// 		app: 'Natours',
+// 	});
+// });
+
+app.get('/api/v1/tours');
 
 // * port
 const port = 3000;
