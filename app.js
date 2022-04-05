@@ -3,7 +3,7 @@
  * it is a framework on top of nodejs
  * written using 100% nodejs code
  */
-const express = require("express");
+const express = require('express');
 
 // * assign/call the express function
 const app = express();
@@ -15,24 +15,24 @@ const app = express();
  *   but also the http method which is used for the request(get, post) and etc.
  */
 
-// * arguments = <route>, <callback fn>
-app.get("/", (req, res) => {
-  res.status(200).json({
-    message: "Hello from server!",
-    app: "Natours",
-  });
+// * arguments = <route>, <callback fn>(request, response)
+app.get('/', (req, res) => {
+	res.status(200).json({
+		message: 'Hello from server!',
+		app: 'Natours',
+	});
 });
 
-app.post("/", (req, res) => {
-  res.status(200).json({
-    message: "You can post to this input...",
-    app: "Natours",
-  });
+app.post('/', (req, res) => {
+	res.status(200).json({
+		message: 'You can post to this input...',
+		app: 'Natours',
+	});
 });
 
 // * port
 const port = 3000;
 
 app.listen(port, () => {
-  console.log(`App running on port ${port}`);
+	console.log(`App running on port ${port}`);
 });
