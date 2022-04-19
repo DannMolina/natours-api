@@ -100,6 +100,47 @@ app.post('/api/v1/tours', (req, res) => {
 	);
 });
 
+/**
+ * http method to updated data
+ * PUT & PATCH
+ * PUT = application expect to receives the entire new updated object
+ * PATCH = with patch we only expect the properties that should actually be updated on the object
+ */
+app.patch('/api/v1/tours/:id', (req, res) => {
+	// * check if id is valid
+	if (req.params.id * 1 > tours.length) {
+		return res.status(404).json({
+			status: 'fail',
+			message: 'Invalid ID',
+		});
+	}
+
+	res.status(200).json({
+		status: 'success',
+		data: {
+			tour: '<Updated tour here...>',
+		},
+	});
+});
+
+/**
+ * 204 = no content
+ */
+app.delete('/api/v1/tours/:id', (req, res) => {
+	// * check if id is valid
+	if (req.params.id * 1 > tours.length) {
+		return res.status(404).json({
+			status: 'fail',
+			message: 'Invalid ID',
+		});
+	}
+
+	res.status(204).json({
+		status: 'success',
+		data: null,
+	});
+});
+
 // * port
 const port = 3000;
 
