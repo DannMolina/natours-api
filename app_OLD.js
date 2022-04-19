@@ -42,7 +42,7 @@ const tours = JSON.parse(
 	fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-const getAllTours = (req, res) => {
+app.get('/api/v1/tours', (req, res) => {
 	res.status(200).json({
 		status: 'sucess',
 		results: tours.length,
@@ -50,14 +50,14 @@ const getAllTours = (req, res) => {
 			tours: tours,
 		},
 	});
-};
+});
 
 /**
  * :id = variable
  * :optional = just add ?
  * req.params = read parameters from the url
  */
-const getTour = (req, res) => {
+app.get('/api/v1/tours/:id', (req, res) => {
 	const id = req.params.id * 1; // convert string to number
 	const tour = tours.find((el) => el.id === id);
 
@@ -76,10 +76,11 @@ const getTour = (req, res) => {
 			tour: tour,
 		},
 	});
-};
+});
 
-const createTour = (req, res) => {
+app.post('/api/v1/tours', (req, res) => {
 	// console.log(req.body);
+
 	const newId = tours[tours.length - 1].id + 1;
 	// Object.assign allows us to create a new objefct by mergin two existing objects together
 	const newTour = Object.assign({ id: newId }, req.body);
@@ -97,7 +98,7 @@ const createTour = (req, res) => {
 			});
 		}
 	);
-};
+});
 
 /**
  * http method to updated data
@@ -105,7 +106,7 @@ const createTour = (req, res) => {
  * PUT = application expect to receives the entire new updated object
  * PATCH = with patch we only expect the properties that should actually be updated on the object
  */
-const updateTour = (req, res) => {
+app.patch('/api/v1/tours/:id', (req, res) => {
 	// * check if id is valid
 	if (req.params.id * 1 > tours.length) {
 		return res.status(404).json({
@@ -120,12 +121,12 @@ const updateTour = (req, res) => {
 			tour: '<Updated tour here...>',
 		},
 	});
-};
+});
 
 /**
  * 204 = no content
  */
-const deleteTour = (req, res) => {
+app.delete('/api/v1/tours/:id', (req, res) => {
 	// * check if id is valid
 	if (req.params.id * 1 > tours.length) {
 		return res.status(404).json({
@@ -138,25 +139,7 @@ const deleteTour = (req, res) => {
 		status: 'success',
 		data: null,
 	});
-};
-
-/**
- * app.get(<route><controller/handler function>)
- */
-// app.get('/api/v1/tours', getAllTours);
-// app.post('/api/v1/tours', createTour);
-// app.get('/api/v1/tours/:id', getTour);
-// app.patch('/api/v1/tours/:id', updateTour);
-// app.delete('/api/v1/tours/:id', deleteTour);
-
-/**
- * Using route
- */
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
-app.route('/api/v1/tours/:id')
-	.get(getTour)
-	.patch(updateTour)
-	.delete(deleteTour);
+});
 
 // * port
 const port = 3000;
