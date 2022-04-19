@@ -123,3 +123,32 @@ _Principles of REST APIs_
     -   the state should be handled on client means that each request must contain all the information that is necessary
         to process a certain request on the server.
         So the server should never ever have to remember the previous request in order to process the current request
+
+**Middleware and Request-Response Cycle**
+
+Visual: Incoming request(req and res onject) ---> RESPONSE
+
+-   To start Express app receives a request when someone hits a server for which it will then create a request and response object.
+    That data whill then be used and processed in order to generate and send back a meaningful response.
+
+Visual:
+Incoming request(req and res onject) --// middleware ... next():e.g parsing body--// middleware ... next():e.g logging-- middleware ... next():e.g setting headers--// middleware ... res.send():e.g router--> RESPONSE
+
+-   In order to processed that data, in Express we use something called _middleware_ which can manipulate the request or the response object or really execute any other code that we like.
+    -   middleware doesn't always have to be just about the request or the response object, but it usually is mostly about the request.
+    -   sample middleware Express dot JSON: to get access to the request body on the request object.
+    -   it's called middleware because it's a function that is executed between, so in the middle of receiving the request and sending the response.
+    -   And we can say that in Express _everything is middleware_ even our route definitions.
+        -   So even when we defined our routes, we can think of the route handler functions as middleware functions.
+        -   They are simply middleware functions that are only executed for certain routes.
+    -   Express dot JSON as middleware which is also called as body-parser.
+    -   All the middleware together that we use in our app, is called the middleware stack.
+        -   Important note: the order of middleware in the stack is actually defined by the order they are defined in the code.
+        -   So the middleware that appears first in the code, is executed before one that appears later.
+            -   the order of the code matters a lot in Express.
+
+In general:
+
+-   The initial request and response object go through each middleware step by step.
+-   and you can think of this whole process as kind of a pipeline where our data go through, so just like it's been piped from request to final response and like this we then finish the so-called **request-response** cycle.
+-   So the request-response cycle is really everything that starts with the incoming request, then executing all the middleware in the middleware stack step by step and finally sending the response to finish the cycle.
