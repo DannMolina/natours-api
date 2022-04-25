@@ -6,6 +6,7 @@
 const fs = require('fs');
 const express = require('express');
 const morgan = require('morgan'); // * logging middleware
+const res = require('express/lib/response');
 
 // * assign/call the express function
 const app = express();
@@ -170,6 +171,38 @@ const deleteTour = (req, res) => {
 	});
 };
 
+const getAllUsers = (req, res) => {
+	res.status(500).json({
+		status: 'error',
+		message: 'This route is not yet defined!',
+	});
+};
+
+const createUser = () => {
+	res.status(500).json({
+		status: 'error',
+		message: 'This route is not yet defined!',
+	});
+};
+const getUser = () => {
+	res.status(500).json({
+		status: 'error',
+		message: 'This route is not yet defined!',
+	});
+};
+const updateUser = () => {
+	res.status(500).json({
+		status: 'error',
+		message: 'This route is not yet defined!',
+	});
+};
+const deleteUser = () => {
+	res.status(500).json({
+		status: 'error',
+		message: 'This route is not yet defined!',
+	});
+};
+
 /**
  * app.get(<route><controller/route handler function>)
  */
@@ -187,6 +220,12 @@ app.route('/api/v1/tours/:id')
 	.get(getTour)
 	.patch(updateTour)
 	.delete(deleteTour);
+
+app.route('/api/v1/users').get(getAllUsers).post(createUser);
+app.route('/api/v1/users/:id')
+	.get(getUser)
+	.patch(updateUser)
+	.delete(deleteUser);
 
 /**
  * START SERVER
