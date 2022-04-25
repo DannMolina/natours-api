@@ -215,17 +215,23 @@ const deleteUser = () => {
 /**
  * Using ROUTES
  */
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
-app.route('/api/v1/tours/:id')
+const tourRouter = express.Router(); // * middleware
+const userRouter = express.Router();
+
+// * mount a router on specific route
+app.use('/api/v1/tours', tourRouter); // * use middleware on specific route
+app.use('/api/v1/users', userRouter);
+
+// * from app.route to tourRouter.route
+tourRouter.route('/').get(getAllTours).post(createTour); // '/api/v1/tours'
+tourRouter
+	.route('/:id') // '/api/v1/tours/:id'
 	.get(getTour)
 	.patch(updateTour)
 	.delete(deleteTour);
 
-app.route('/api/v1/users').get(getAllUsers).post(createUser);
-app.route('/api/v1/users/:id')
-	.get(getUser)
-	.patch(updateUser)
-	.delete(deleteUser);
+userRouter.route('/').get(getAllUsers).post(createUser);
+userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 /**
  * START SERVER
