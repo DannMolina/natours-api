@@ -5,15 +5,20 @@
  */
 const fs = require('fs');
 const express = require('express');
-const res = require('express/lib/response');
+const morgan = require('morgan'); // * logging middleware
 
 // * assign/call the express function
 const app = express();
 
 /**
+ * MIDDLWARES
+ */
+/**
  * Middleware is basically a function that can modify the incoming request data.
  * it stands between, so in the middle of the request and the response.
  */
+app.use(morgan('dev'));
+
 app.use(express.json());
 
 /**
@@ -41,6 +46,7 @@ app.use(express.json());
 /**
  * next() is the middleware
  * define global middleware before all route handlers
+ * middleware runs first before the route handlers
  */
 app.use((req, res, next) => {
 	console.log('Hello from the middleware!');
@@ -60,6 +66,9 @@ const tours = JSON.parse(
 	fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
+/**
+ * ROUTE HANDLERS
+ */
 const getAllTours = (req, res) => {
 	console.log(req.requestTime);
 
@@ -162,7 +171,7 @@ const deleteTour = (req, res) => {
 };
 
 /**
- * app.get(<route><controller/handler function>)
+ * app.get(<route><controller/route handler function>)
  */
 // app.get('/api/v1/tours', getAllTours);
 // app.post('/api/v1/tours', createTour);
@@ -171,7 +180,7 @@ const deleteTour = (req, res) => {
 // app.delete('/api/v1/tours/:id', deleteTour);
 
 /**
- * Using route
+ * Using ROUTES
  */
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
 app.route('/api/v1/tours/:id')
@@ -179,7 +188,9 @@ app.route('/api/v1/tours/:id')
 	.patch(updateTour)
 	.delete(deleteTour);
 
-// * port
+/**
+ * START SERVER
+ */
 const port = 3000;
 
 app.listen(port, () => {
