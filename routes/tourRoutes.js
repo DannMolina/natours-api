@@ -4,6 +4,11 @@ const tourController = require('../controllers/tourController');
 const router = express.Router(); // * middleware
 
 /**
+ * Middleware
+ */
+const { checkIDMiddleware, checkBodyMiddleware } = tourController;
+
+/**
  * param middleware
  * specify first the parameter which is the "id" that we want to search for
  * /api/v1/tours/:id
@@ -14,14 +19,13 @@ const router = express.Router(); // * middleware
 // 	// * call the middleware
 // 	next();
 // });
-
-router.param('id', tourController.checkID);
+router.param('id', checkIDMiddleware);
 
 // * from app.route to router.route
 router
 	.route('/')
 	.get(tourController.getAllTours)
-	.post(tourController.createTour); // '/api/v1/tours'
+	.post(checkBodyMiddleware, tourController.createTour); // '/api/v1/tours'
 router
 	.route('/:id') // '/api/v1/tours/:id'
 	.get(tourController.getTour)

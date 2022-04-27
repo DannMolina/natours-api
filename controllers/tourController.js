@@ -4,7 +4,7 @@ const tours = JSON.parse(
 	fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
 );
 
-exports.checkID = (req, res, next, val) => {
+exports.checkIDMiddleware = (req, res, next, val) => {
 	// * check if id is valid
 	if (req.params.id * 1 > tours.length) {
 		return res.status(404).json({
@@ -13,6 +13,22 @@ exports.checkID = (req, res, next, val) => {
 		});
 	}
 
+	next();
+};
+
+/**
+ * Create a checkBody middleware
+ * Check if the body contains the name and price property
+ * if not, send back 400 (bad request)
+ * Add it to the post handler stack
+ */
+exports.checkBodyMiddleware = (req, res, next) => {
+	if (!req.body.name || !req.body.price) {
+		return res.status(400).json({
+			status: 'fail',
+			message: 'Missing name or price!',
+		});
+	}
 	next();
 };
 
