@@ -3,6 +3,20 @@ const tourController = require('../controllers/tourController');
 
 const router = express.Router(); // * middleware
 
+/**
+ * param middleware
+ * specify first the parameter which is the "id" that we want to search for
+ * /api/v1/tours/:id
+ */
+// router.param('id', (req, res, next, val) => {
+// 	console.log(`Tour id is: ${val}`);
+
+// 	// * call the middleware
+// 	next();
+// });
+
+router.param('id', tourController.checkID);
+
 // * from app.route to router.route
 router
 	.route('/')
