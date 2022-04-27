@@ -1,19 +1,19 @@
 const fs = require('fs');
 
 const tours = JSON.parse(
-	fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
+    fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`),
 );
 
 exports.checkIDMiddleware = (req, res, next, val) => {
-	// * check if id is valid
-	if (req.params.id * 1 > tours.length) {
-		return res.status(404).json({
-			status: 'fail',
-			message: 'Invalid ID',
-		});
-	}
+    // * check if id is valid
+    if (req.params.id * 1 > tours.length) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Invalid ID',
+        });
+    }
 
-	next();
+    next();
 };
 
 /**
@@ -23,24 +23,24 @@ exports.checkIDMiddleware = (req, res, next, val) => {
  * Add it to the post handler stack
  */
 exports.checkBodyMiddleware = (req, res, next) => {
-	if (!req.body.name || !req.body.price) {
-		return res.status(400).json({
-			status: 'fail',
-			message: 'Missing name or price!',
-		});
-	}
-	next();
+    if (!req.body.name || !req.body.price) {
+        return res.status(400).json({
+            status: 'fail',
+            message: 'Missing name or price!',
+        });
+    }
+    next();
 };
 
 exports.getAllTours = (req, res) => {
-	res.status(200).json({
-		status: 'sucess',
-		requestedAt: req.requestTime,
-		results: tours.length,
-		data: {
-			tours: tours,
-		},
-	});
+    res.status(200).json({
+        status: 'sucess',
+        requestedAt: req.requestTime,
+        results: tours.length,
+        data: {
+            tours: tours,
+        },
+    });
 };
 
 /**
@@ -49,37 +49,38 @@ exports.getAllTours = (req, res) => {
  * req.params = read parameters from the url
  */
 exports.getTour = (req, res) => {
-	const id = req.params.id * 1; // convert string to number
-	const tour = tours.find((el) => el.id === id);
+    const id = req.params.id * 1; // convert string to number
+    const tour = tours.find((el) => el.id === id);
 
-	res.status(200).json({
-		status: 'sucess',
-		// results: tours.length,
-		data: {
-			tour: tour,
-		},
-	});
+    res.status(200).json({
+        status: 'sucess',
+        // results: tours.length,
+        data: {
+            tour: tour,
+        },
+    });
 };
 
 exports.createTour = (req, res) => {
-	// console.log(req.body);
-	const newId = tours[tours.length - 1].id + 1;
-	// Object.assign allows us to create a new objefct by mergin two existing objects together
-	const newTour = Object.assign({ id: newId }, req.body);
+    // console.log(req.body);
+    const newId = tours[tours.length - 1].id + 1;
+    // Object.assign allows us to create a new objefct by mergin two existing objects together
+    // eslint-disable-next-line prefer-object-spread
+    const newTour = Object.assign({ id: newId }, req.body);
 
-	tours.push(newTour);
-	fs.writeFile(
-		`${__dirname}/dev-data/data/tours-simple.json`,
-		JSON.stringify(tours),
-		(err) => {
-			res.status(201).json({
-				status: 'success',
-				data: {
-					tour: newTour,
-				},
-			});
-		}
-	);
+    tours.push(newTour);
+    fs.writeFile(
+        `${__dirname}/dev-data/data/tours-simple.json`,
+        JSON.stringify(tours),
+        () => {
+            res.status(201).json({
+                status: 'success',
+                data: {
+                    tour: newTour,
+                },
+            });
+        },
+    );
 };
 
 /**
@@ -89,20 +90,20 @@ exports.createTour = (req, res) => {
  * PATCH = with patch we only expect the properties that should actually be updated on the object
  */
 exports.updateTour = (req, res) => {
-	res.status(200).json({
-		status: 'success',
-		data: {
-			tour: '<Updated tour here...>',
-		},
-	});
+    res.status(200).json({
+        status: 'success',
+        data: {
+            tour: '<Updated tour here...>',
+        },
+    });
 };
 
 /**
  * 204 = no content
  */
 exports.deleteTour = (req, res) => {
-	res.status(204).json({
-		status: 'success',
-		data: null,
-	});
+    res.status(204).json({
+        status: 'success',
+        data: null,
+    });
 };

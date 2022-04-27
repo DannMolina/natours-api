@@ -23,13 +23,13 @@ router.param('id', checkIDMiddleware);
 
 // * from app.route to router.route
 router
-	.route('/')
-	.get(tourController.getAllTours)
-	.post(checkBodyMiddleware, tourController.createTour); // '/api/v1/tours'
+    .route('/')
+    .get(tourController.getAllTours)
+    .post(checkBodyMiddleware, tourController.createTour); // '/api/v1/tours'
 router
-	.route('/:id') // '/api/v1/tours/:id'
-	.get(tourController.getTour)
-	.patch(tourController.updateTour)
-	.delete(tourController.deleteTour);
+    .route('/:id') // '/api/v1/tours/:id'
+    .get(tourController.getTour)
+    .patch(tourController.updateTour)
+    .delete(tourController.deleteTour);
 
 module.exports = router;

@@ -39,17 +39,17 @@ app.use(express.json());
 // });
 
 const tours = JSON.parse(
-	fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
+    fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`),
 );
 
 app.get('/api/v1/tours', (req, res) => {
-	res.status(200).json({
-		status: 'sucess',
-		results: tours.length,
-		data: {
-			tours: tours,
-		},
-	});
+    res.status(200).json({
+        status: 'sucess',
+        results: tours.length,
+        data: {
+            tours: tours,
+        },
+    });
 });
 
 /**
@@ -58,46 +58,46 @@ app.get('/api/v1/tours', (req, res) => {
  * req.params = read parameters from the url
  */
 app.get('/api/v1/tours/:id', (req, res) => {
-	const id = req.params.id * 1; // convert string to number
-	const tour = tours.find((el) => el.id === id);
+    const id = req.params.id * 1; // convert string to number
+    const tour = tours.find((el) => el.id === id);
 
-	// if (id > tours.length) {
-	if (!tour) {
-		return res.status(404).json({
-			status: 'fail',
-			message: 'Invalid ID',
-		});
-	}
+    // if (id > tours.length) {
+    if (!tour) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Invalid ID',
+        });
+    }
 
-	res.status(200).json({
-		status: 'sucess',
-		// results: tours.length,
-		data: {
-			tour: tour,
-		},
-	});
+    res.status(200).json({
+        status: 'sucess',
+        // results: tours.length,
+        data: {
+            tour: tour,
+        },
+    });
 });
 
 app.post('/api/v1/tours', (req, res) => {
-	// console.log(req.body);
+    // console.log(req.body);
 
-	const newId = tours[tours.length - 1].id + 1;
-	// Object.assign allows us to create a new objefct by mergin two existing objects together
-	const newTour = Object.assign({ id: newId }, req.body);
+    const newId = tours[tours.length - 1].id + 1;
+    // Object.assign allows us to create a new objefct by mergin two existing objects together
+    const newTour = Object.assign({ id: newId }, req.body);
 
-	tours.push(newTour);
-	fs.writeFile(
-		`${__dirname}/dev-data/data/tours-simple.json`,
-		JSON.stringify(tours),
-		(err) => {
-			res.status(201).json({
-				status: 'success',
-				data: {
-					tour: newTour,
-				},
-			});
-		}
-	);
+    tours.push(newTour);
+    fs.writeFile(
+        `${__dirname}/dev-data/data/tours-simple.json`,
+        JSON.stringify(tours),
+        (err) => {
+            res.status(201).json({
+                status: 'success',
+                data: {
+                    tour: newTour,
+                },
+            });
+        },
+    );
 });
 
 /**
@@ -107,38 +107,38 @@ app.post('/api/v1/tours', (req, res) => {
  * PATCH = with patch we only expect the properties that should actually be updated on the object
  */
 app.patch('/api/v1/tours/:id', (req, res) => {
-	// * check if id is valid
-	if (req.params.id * 1 > tours.length) {
-		return res.status(404).json({
-			status: 'fail',
-			message: 'Invalid ID',
-		});
-	}
+    // * check if id is valid
+    if (req.params.id * 1 > tours.length) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Invalid ID',
+        });
+    }
 
-	res.status(200).json({
-		status: 'success',
-		data: {
-			tour: '<Updated tour here...>',
-		},
-	});
+    res.status(200).json({
+        status: 'success',
+        data: {
+            tour: '<Updated tour here...>',
+        },
+    });
 });
 
 /**
  * 204 = no content
  */
 app.delete('/api/v1/tours/:id', (req, res) => {
-	// * check if id is valid
-	if (req.params.id * 1 > tours.length) {
-		return res.status(404).json({
-			status: 'fail',
-			message: 'Invalid ID',
-		});
-	}
+    // * check if id is valid
+    if (req.params.id * 1 > tours.length) {
+        return res.status(404).json({
+            status: 'fail',
+            message: 'Invalid ID',
+        });
+    }
 
-	res.status(204).json({
-		status: 'success',
-		data: null,
-	});
+    res.status(204).json({
+        status: 'success',
+        data: null,
+    });
 });
 
 /**
@@ -162,5 +162,5 @@ app.delete('/api/v1/tours/:id', (req, res) => {
 const port = 3000;
 
 app.listen(port, () => {
-	console.log(`App running on port ${port}`);
+    console.log(`App running on port ${port}`);
 });

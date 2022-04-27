@@ -23,7 +23,7 @@ const app = express();
 
 // * run only the logger if the env is in development mode
 if (process.env.NODE_ENV === 'development') {
-	app.use(morgan('dev')); // logging middleware
+    app.use(morgan('dev')); // logging middleware
 }
 
 app.use(express.json()); // object res middleware
@@ -40,17 +40,17 @@ app.use(express.static(`${__dirname}/public`)); // serve static file
  * middleware runs first before the route handlers
  */
 app.use((req, res, next) => {
-	console.log('Hello from the middleware!');
+    console.log('Hello from the middleware!');
 
-	// * call next middleware
-	next();
+    // * call next middleware
+    next();
 });
 
 app.use((req, res, next) => {
-	req.requestTime = new Date().toISOString();
+    req.requestTime = new Date().toISOString();
 
-	// * call next middleware
-	next();
+    // * call next middleware
+    next();
 });
 
 /**
