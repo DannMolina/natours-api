@@ -20,7 +20,12 @@ const app = express();
  * Middleware is basically a function that can modify the incoming request data.
  * it stands between, so in the middle of the request and the response.
  */
-app.use(morgan('dev')); // logging middleware
+
+// * run only the logger if the env is in development mode
+if (process.env.NODE_ENV === 'development') {
+	app.use(morgan('dev')); // logging middleware
+}
+
 app.use(express.json()); // object res middleware
 
 /**
