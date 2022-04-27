@@ -20,8 +20,14 @@ const app = express();
  * Middleware is basically a function that can modify the incoming request data.
  * it stands between, so in the middle of the request and the response.
  */
-app.use(morgan('dev'));
-app.use(express.json());
+app.use(morgan('dev')); // logging middleware
+app.use(express.json()); // object res middleware
+
+/**
+ * no need to put the /public to url
+ * set "public" as a root
+ */
+app.use(express.static(`${__dirname}/public`)); // serve static file
 
 /**
  * next() is the middleware
