@@ -9,7 +9,13 @@
  *  - environment variables
  */
 /**
+ * Note: mongoose is all about model,
+ * create model in mongoose in order to create documents using it
+ * and also to query update and delete these documents
+ * so basically, to perform each of the CRUD operation, create, read, update and delete
+ * we need a Mongoose model, and in order to create a MODEL, we nee a SCHEMA.
  *
+ * Create models out of mongoose schema
  */
 const mongoose = require('mongoose'); // mongoDB driver
 const dotenv = require('dotenv'); // use to store the variable to the nodejs environment variable
@@ -55,6 +61,36 @@ const app = require('./app');
  * - process.env = from nodejs/ set by nodejs
  */
 // console.log(process.env);
+
+/**
+ * SCHEMA
+ */
+const tourSchema = new mongoose.Schema({
+    /**
+     * property:{}
+     * sample of schema type options and they can be different for different types
+     * and can add validation options
+     * see: documents for more options
+     */
+    name: {
+        type: String,
+        required: [true, 'A tour must have a name'],
+        unique: true,
+    },
+    rating: {
+        type: Number,
+        default: 4.5,
+    },
+    price: {
+        type: Number,
+        required: [true, 'A tour must have a price'],
+    },
+});
+
+/**
+ * Model
+ */
+const Tour = mongoose.model('Tour', tourSchema);
 
 /**
  * START SERVER
