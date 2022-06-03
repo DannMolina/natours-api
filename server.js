@@ -11,6 +11,7 @@
 /**
  *
  */
+const mongoose = require('mongoose'); // mongoDB driver
 const dotenv = require('dotenv'); // use to store the variable to the nodejs environment variable
 /**
  * read the variables from the file and save them into nodejs environment variable
@@ -20,6 +21,29 @@ const dotenv = require('dotenv'); // use to store the variable to the nodejs env
  * note: ENV variables are on the "process"
  */
 dotenv.config({ path: './config.env' });
+
+/**
+ * DB is the hosted database
+ */
+const DB = process.env.DATABASE.replace(
+    '<PASSWORD>', // * replace the <PASSWORD> on our connection string with the ENV DATABASE_PASSWORD
+    process.env.DATABASE_PASSWORD,
+);
+/**
+ * Parameters
+ * - connection string, object with some options to deal with deprecations warning
+ * - process.env.DATABASE_LOCAL for local database
+ */
+mongoose
+    .connect(DB, {
+        // * hosted database version
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+    })
+    .then((con) => {
+        console.log('DB connection successful!');
+    });
 
 const app = require('./app');
 
