@@ -152,3 +152,12 @@ In general:
 -   The initial request and response object go through each middleware step by step.
 -   and you can think of this whole process as kind of a pipeline where our data go through, so just like it's been piped from request to final response and like this we then finish the so-called **request-response** cycle.
 -   So the request-response cycle is really everything that starts with the incoming request, then executing all the middleware in the middleware stack step by step and finally sending the response to finish the cycle.
+
+WHAT IS MONGOOSE, AND WHY USE IT?
+
+-   it is an Object Data Modeling(ODM) library for MongoDB and Node.js, a higher level of abstraction;
+-   Mongoose allows for rapid and simple development of mongoDB database interactions;
+-   Features: schemas to model data and relationships, easy data validation, simple query API, middleware etc;
+-   Mongoose schema: where we model our data, by describing the structure of the data, default values, and validation;
+-   Mongoose model: a wrapper for the schema, providing an interface to the database for CRUD operations.
+    SCHEMA --> MODEL
