@@ -19,7 +19,7 @@ const { checkIDMiddleware, checkBodyMiddleware } = tourController;
 // 	// * call the middleware
 // 	next();
 // });
-// router.param('id', checkIDMiddleware);
+router.param('id', checkIDMiddleware);
 
 // * from app.route to router.route
 router

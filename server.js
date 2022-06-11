@@ -63,39 +63,29 @@ const app = require('./app');
 // console.log(process.env);
 
 /**
- * SCHEMA
- */
-const tourSchema = new mongoose.Schema({
-    /**
-     * property:{}
-     * sample of schema type options and they can be different for different types
-     * and can add validation options
-     * see: documents for more options
-     */
-    name: {
-        type: String,
-        required: [true, 'A tour must have a name'],
-        unique: true,
-    },
-    rating: {
-        type: Number,
-        default: 4.5,
-    },
-    price: {
-        type: Number,
-        required: [true, 'A tour must have a price'],
-    },
-});
-
-/**
- * Model
- */
-const Tour = mongoose.model('Tour', tourSchema);
-
-/**
  * START SERVER
  */
 const port = process.env.PORT || 3000;
+
+/**
+ * FOR TESTING ONLY
+ * testTour is an instance of the Tour model and so now it has a coupke of methods on it
+ * that can be use in order to interact with the database
+ * sample : testTour.save() -> this will then save it to the Tour collection in the database
+ */
+// const testTour = new Tour({
+//     name: 'The Forest Hiker Part 4',
+//     // rating: 4.7,
+//     price: 497,
+// });
+// testTour
+//     .save()
+//     .then((doc) => {
+//         console.log(doc);
+//     })
+//     .catch((err) => {
+//         console.log('ERROR: ', err);
+//     });
 
 app.listen(port, () => {
     console.log(`App running on port ${port}`);

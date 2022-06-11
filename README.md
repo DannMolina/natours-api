@@ -161,3 +161,40 @@ WHAT IS MONGOOSE, AND WHY USE IT?
 -   Mongoose schema: where we model our data, by describing the structure of the data, default values, and validation;
 -   Mongoose model: a wrapper for the schema, providing an interface to the database for CRUD operations.
     SCHEMA --> MODEL
+
+**MVC ARCHITECTURE ON EXPRESS APP:**
+
+-   using a pattern, or an architecture like MVC allows us to write a more modular application which
+    is going to be way easier to maintain in scalen as necessary
+-   one of the goal of MVC is to separate the business logic from application logic
+    **Application logic**
+
+        -   code that us only concerned about the application's implementation, not the underlying business problem we're trying to solve(e.g showing and selling tours);
+        -   application logic is the logic that makes the app actually work.
+        -   concerned about managing requests and responses;
+        -   safe to say that application logic is more about technical stuff or about the app's more technical aspects;
+        -   also if we have views in our app the application logic serves as a bridge between model and view layers so that we never mix business logic with presentation logic
+
+    **Business logic**
+
+        -   it's all the code that actually solves the business problem that we set out to solve; let's say that our goal is to show tours to customers and then sell them. And the code that is directly related to business rules to how the business works and the business needs, is business logic.
+            some examples that concerned with the business itself(so it's part of the business logic):
+        -   creating new tours in the database;
+        -   checking if user's password is correct;
+        -   validating user input data;
+        -   ensuring only users who bought a tour can review it;
+
+    Note: application logic and business logic are almost impossible to completely separate and so sometimes the will overlap. But we should do our best efforts to keep the application logic in our controllers and business logic in our models.
+
+MODEL(Business Logic)
+
+-   _model_ layer is concerned with everything about applications data and the business logic.
+
+VIEW(Application Logic)
+
+-   _view_ layer is necessary if there's a graphical interface in our app. Or if we're building a server-side rendered website
+-   view layer consist basically of the templates used to generate the view so the website that we're going to send back to the client and that is the presentation logic
+
+CONTROLLER(Presentation Logic)
+
+-   the function of the _controllers_ is to handler the applications requests interact with models and send back response to the client and all that is called the application logic
