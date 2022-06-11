@@ -25,7 +25,7 @@ const { checkIDMiddleware, checkBodyMiddleware } = tourController;
 router
     .route('/')
     .get(tourController.getAllTours)
-    .post(checkBodyMiddleware, tourController.createTour); // '/api/v1/tours'
+    .post(tourController.createTour); // '/api/v1/tours'
 router
     .route('/:id') // '/api/v1/tours/:id'
     .get(tourController.getTour)
