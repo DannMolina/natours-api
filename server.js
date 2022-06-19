@@ -27,6 +27,7 @@ const dotenv = require('dotenv'); // use to store the variable to the nodejs env
  * note: ENV variables are on the "process"
  */
 dotenv.config({ path: './config.env' });
+const app = require('./app');
 
 /**
  * DB is the hosted database
@@ -50,8 +51,6 @@ mongoose
     .then((con) => {
         console.log('DB connection successful!');
     });
-
-const app = require('./app');
 
 /**
  * GET ENV VARIABLE
