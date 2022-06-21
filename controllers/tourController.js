@@ -7,9 +7,52 @@ const Tour = require('./../models/tourModel');
  */
 exports.getAllTours = async (req, res) => {
     try {
-        console.log(req.query);
-        const tours = await Tour.find();
+        /**
+         * EXCLUDE
+         * BUILD QUERY
+         */
+        const queryObj = { ...req.query };
+        const excludedFields = ['page', 'sort', 'limit', 'fields'];
+        excludedFields.forEach((el) => delete queryObj[el]);
 
+        /**
+         * queries
+         * there are 2 types of writing database queries
+         * 1st: use filter object
+         * 2nd: use some special mongoose methods
+         */
+        console.log(req.query, queryObj);
+
+        /**
+         * EXECUTE QUERY
+         */
+        // 1st
+        // const tours = await Tour.find({
+        //     duration: 5,
+        //     difficulty: 'easy',
+        // });
+        /**
+         * save this part into a query then in the end
+         * as soon as we change all the methods to the query that we need to, only then by the end we can await that query
+         * For example, we're going to use the sort method.
+         * We're going to use the predict method,
+         * and we're going to use, really, a bunch of methods, and chain them to this query.
+         */
+        const query = Tour.find(queryObj);
+
+        /**
+         * await query here
+         */
+        const tours = await query;
+
+        // 2nd
+        // const query = await Tour.find()
+        //     .where('duration')
+        //     .equals(5)
+        //     .where('difficulty')
+        //     .equals('easy');
+
+        // SEND RESPONSE
         res.status(200).json({
             status: 'sucess',
             requestedAt: req.requestTime,
