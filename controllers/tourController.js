@@ -11,9 +11,24 @@ exports.getAllTours = async (req, res) => {
          * EXCLUDE
          * BUILD QUERY
          */
+        // * 1) Filtering
         const queryObj = { ...req.query };
         const excludedFields = ['page', 'sort', 'limit', 'fields'];
         excludedFields.forEach((el) => delete queryObj[el]);
+
+        // * 2) Advance Filtering
+        let queryStr = JSON.stringify(queryObj);
+
+        /**
+         * /\b(gte|gt|lte|lt)\b/ = match only with the char inside parenthesis using \b\b
+         * g = happen multiple time
+         * match(arrow fn) = replace with "$"
+         * $gte|$gt|$lte|$lt = mongoDB operators
+         */
+        queryStr = queryStr.replace(
+            /\b(gte|gt|lte|lt)\b/g,
+            (match) => `$${match}`,
+        );
 
         /**
          * queries
@@ -38,7 +53,8 @@ exports.getAllTours = async (req, res) => {
          * We're going to use the predict method,
          * and we're going to use, really, a bunch of methods, and chain them to this query.
          */
-        const query = Tour.find(queryObj);
+        // const query = Tour.find(queryObj); // 1)
+        const query = Tour.find(JSON.parse(queryStr)); // 2)
 
         /**
          * await query here
