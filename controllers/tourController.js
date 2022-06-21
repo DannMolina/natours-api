@@ -53,8 +53,8 @@ exports.getAllTours = async (req, res) => {
          * We're going to use the predict method,
          * and we're going to use, really, a bunch of methods, and chain them to this query.
          */
-        // const query = Tour.find(queryObj); // 1)
-        const query = Tour.find(JSON.parse(queryStr)); // 2)
+        // const query = Tour.find(queryObj); // * 1) api/v1/tours?duration=5&difficulty=easy&price=1500
+        const query = Tour.find(JSON.parse(queryStr)); // * 2) api/v1/tours?duration[gte]=5&difficulty=easy&price[lt]=1500
 
         /**
          * await query here
