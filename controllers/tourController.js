@@ -54,7 +54,30 @@ exports.getAllTours = async (req, res) => {
          * and we're going to use, really, a bunch of methods, and chain them to this query.
          */
         // const query = Tour.find(queryObj); // * 1) api/v1/tours?duration=5&difficulty=easy&price=1500
-        const query = Tour.find(JSON.parse(queryStr)); // * 2) api/v1/tours?duration[gte]=5&difficulty=easy&price[lt]=1500
+        // const query = Tour.find(JSON.parse(queryStr)); // * 2) api/v1/tours?duration[gte]=5&difficulty=easy&price[lt]=1500
+
+        let query = Tour.find(JSON.parse(queryStr));
+
+        // 2) Sorting
+        // default sort is ascending = http://localhost:3000/api/v1/tours?sort=price
+        // sort descending just add "-" sample "sort=-" = http://localhost:3000/api/v1/tours?sort=-price
+        // sort descending just add "-" sample "sort=-" = http://localhost:3000/api/v1/tours?sort=-price,ratingsAverage
+        // sort with more than one criteria just add "," = http://localhost:3000/api/v1/tours?sort=-price,ratingsAverage
+        // it will sort first the price then the ratingsAverage
+        if (req.query.sort) {
+            /**
+             * split it by comma, and so this will then return an array of all the strings,
+             * and then all we have to do is to put it back together using join, and as the "join" string we use a space.
+             */
+
+            // query = query.sort(req.query.sort);
+            const sortBy = req.query.sort.split(',').join(' ');
+            query = query.sort(sortBy); // sortBy('-price -ratingsAverage');
+        } else {
+            // * default query if not provided upon request
+            // * default is ascending, ordered by the date the document created
+            query = query.sort('-createdAt');
+        }
 
         /**
          * await query here
