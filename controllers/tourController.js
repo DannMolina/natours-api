@@ -60,8 +60,8 @@ exports.getAllTours = async (req, res) => {
 
         // 2) Sorting
         // default sort is ascending = http://localhost:3000/api/v1/tours?sort=price
-        // sort descending just add "-" sample "sort=-" = http://localhost:3000/api/v1/tours?sort=-price
-        // sort descending just add "-" sample "sort=-" = http://localhost:3000/api/v1/tours?sort=-price,ratingsAverage
+        // sort descending just add "-" sample "sort=-" = http://localhost:3000/api/v1/tours?sort=-price note: applicable on .sort()
+        // sort descending just add "-" sample "sort=-" = http://localhost:3000/api/v1/tours?sort=-price,ratingsAverage .sort()
         // sort with more than one criteria just add "," = http://localhost:3000/api/v1/tours?sort=-price,ratingsAverage
         // it will sort first the price then the ratingsAverage
         if (req.query.sort) {
@@ -72,11 +72,23 @@ exports.getAllTours = async (req, res) => {
 
             // query = query.sort(req.query.sort);
             const sortBy = req.query.sort.split(',').join(' ');
-            query = query.sort(sortBy); // sortBy('-price -ratingsAverage');
+            query = query.sort(sortBy); // sortBy('-price -ratingsAverage'); note: sortBy value separated by space
         } else {
             // * default query if not provided upon request
             // * default is ascending, ordered by the date the document created
             query = query.sort('-createdAt');
+        }
+
+        // 3) Field limiting
+        if (req.query.fields) {
+            const fields = req.query.fields.split(',').join(' ');
+            query = query.select(fields); // note: fields value separated by space
+        } else {
+            // default query if not provided upon request
+            // minus sign '-' is then not including but excluding note: applicable on .select()
+            // http://localhost:3000/api/v1/tours?fields=-name,-duration sample: exclude name and duration to the response
+            // field can also be excluded directly to schema sample: field:{select: false}
+            query = query.select('-__v'); // exclude this field, you can exclude one or more fields
         }
 
         /**
