@@ -91,10 +91,35 @@ exports.getAllTours = async (req, res) => {
             query = query.select('-__v'); // exclude this field, you can exclude one or more fields
         }
 
+        // 4) Pagination
         /**
+         * skip = amount of result that should be skipped before actually querying data
+         * limit = amount of result that we want in the query
+         *
+         * Sample: User wants page number 2 with 10 results per page, that means that results
+         * 1 to 10 are on page one and 11 to 20 on page 2
+         * URL: page=2&limit=10, 1-10 page 1, 11-20 page 2
+         */
+        // by default is page number 1 and limit to 100
+        const page = req.query.page * 1 || 1; // added multiply by one to convert string to number
+        const limit = req.query.limit * 1 || 100;
+        const skip = (page - 1) * limit; // skip formula
+
+        query = query.skip(skip).limit(limit);
+
+        // * happen if there's a page in the query
+        if (req.query.page) {
+            const numTours = await Tour.countDocuments(); // countDocuments() = return the number of documents
+            if (skip >= numTours) {
+                throw new Error('This page does not exist');
+            }
+        }
+        /**
+         * EXECUTE QUERY
          * await query here
          */
         const tours = await query;
+        // moongoose query methods: query.sort().select().skip().limit()
 
         // 2nd
         // const query = await Tour.find()
