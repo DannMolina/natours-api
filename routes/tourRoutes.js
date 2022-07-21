@@ -25,6 +25,8 @@ router
     .route('/top-5-cheap')
     .get(tourController.aliasTopTours, tourController.getAllTours); // '/api/v1/tours/top-5-cheap'
 
+router.route('/tour-stats').get(tourController.getTourStats);
+
 // * from app.route to router.route
 router
     .route('/')
