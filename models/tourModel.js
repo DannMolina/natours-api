@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'); // mongoDB driver
-
+const slugify = require('slugify');
 /**
  * SCHEMA
  */
@@ -17,6 +17,7 @@ const tourSchema = new mongoose.Schema(
             unique: true,
             trim: true,
         },
+        slug: String,
         duration: {
             type: Number,
             required: [true, 'A tour must have a duration'],
@@ -79,6 +80,51 @@ const tourSchema = new mongoose.Schema(
 tourSchema.virtual('durationWeeks').get(function () {
     return this.duration / 7; // "this" keyword is currently pointing to the current document
 });
+
+/**
+ | --------------------------
+ | START: DOCUMENT MIDDLWARE
+ | --------------------------
+ */
+/**
+ * pre() middleware = going to run before an actual event and that event in this case is the "save"
+ * DOCUMENT MIDDLEWARE: runs before .save() command and .create()
+ * 'save' = can also called as hook
+ */
+tourSchema.pre(
+    'save',
+    // callback function => call before an actual document save into the database
+    function (next) {
+        // mongoose also has a next function middleware, each middleware fn in a pre-save middleware has access to next()
+        // console.log(this);
+        this.slug = slugify(this.name, { lower: true });
+        next();
+    },
+);
+
+// tourSchema.pre('save', function (next) {
+//     console.log('Will save document...');
+
+//     next();
+// });
+
+// /**
+//  * post() middleware functions are executed after all the pre middleware functions have completed
+//  */
+// tourSchema.post(
+//     'save',
+//     // callback function => call before an actual document save into the database
+//     function (doc, next) {
+//         console.log(doc);
+
+//         next();
+//     },
+// );
+/**
+ | --------------------------
+ | END
+ | --------------------------
+ */
 
 /**
  * Model
