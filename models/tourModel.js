@@ -63,6 +63,10 @@ const tourSchema = new mongoose.Schema(
             select: false, // exclude this field, option to not include in the response object, default to true
         },
         startDates: [Date],
+        secretTour: {
+            type: Boolean,
+            default: false,
+        },
     },
     {
         // oject for the options
@@ -120,6 +124,37 @@ tourSchema.pre(
 //         next();
 //     },
 // );
+/**
+ | --------------------------
+ | END
+ | --------------------------
+ */
+/**
+ | --------------------------
+ | START: QUERY MIDDLEWARE
+ | --------------------------
+ */
+/**
+ * Middleware allows us to run functions before or after a certain query is executed
+ */
+
+// pre-find hook
+// /^find/ = mean all the strings that start with find
+tourSchema.pre(/^find/, function (next) {
+    this.find({ secretTour: { $ne: true } });
+
+    this.start = Date.now();
+    next();
+});
+
+// docs = all documents that were returned from the query
+tourSchema.post(/^find/, function (docs, next) {
+    console.log(`Query took ${Date.now() - this.start} milliseconds!`);
+    console.log(docs);
+
+    next();
+});
+
 /**
  | --------------------------
  | END
