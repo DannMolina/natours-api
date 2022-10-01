@@ -1,5 +1,7 @@
 const mongoose = require('mongoose'); // mongoDB driver
 const slugify = require('slugify');
+const validator = require('validator');
+
 /**
  * SCHEMA
  */
@@ -13,9 +15,9 @@ const tourSchema = new mongoose.Schema(
          */
         name: {
             type: String,
-            required: [true, 'A tour must have a name'],
+            required: [true, 'A tour must have a name'], // required available on all data type
             unique: true,
-            trim: true,
+            trim: true, // trim space
             // maxlength: {
             //     values: 40,
             //     message:
@@ -31,6 +33,7 @@ const tourSchema = new mongoose.Schema(
                 10,
                 'A tour name must have more or equal than 10 characters',
             ],
+            // validate: [validator.isAlpha, 'Tour name must only characters'], // we can also use other packages as a custom validator
         },
         slug: String,
         duration: {
@@ -46,7 +49,7 @@ const tourSchema = new mongoose.Schema(
             required: [true, 'A tour must have a difficulty'],
             enum: {
                 values: ['easy', 'medium', 'difficult'],
-                message: 'Difficulty is either easy, medium, difficult',
+                message: 'Difficulty is either: easy, medium, difficult',
             },
         },
         ratingsAverage: {
@@ -63,7 +66,19 @@ const tourSchema = new mongoose.Schema(
             type: Number,
             required: [true, 'A tour must have a price'],
         },
-        priceDiscount: Number,
+        priceDiscount: {
+            type: Number,
+            validate: {
+                // custom validator
+                validator: function (val) {
+                    // access the value input for priceDiscount
+                    // this > only points to current doc on NEW document creation
+                    return val < this.price; // note: this keyword will no longer work on update
+                }, // specify validator using validate property
+                message:
+                    'Discount price ({VALUE}) should be below regular price.',
+            },
+        },
         summary: {
             type: String,
             trim: true, // * it only works on string, will remove all the white spaces in the beginning and end of the string
